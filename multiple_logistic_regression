@@ -1,0 +1,82 @@
+#(a) performing multiple logistic regression using the training data
+
+#Import data
+trainData = read.csv('BankTrain.csv')
+trainData = trainData[, c(1,2,5)]
+
+testData = read.csv('BankTest.csv')
+testData = testData[, c(1,2,5)]
+
+#Define a classifier
+classifier = glm( formula = y ~ ., family = binomial, data = trainData )
+
+summary(classifier)
+
+#(b)plotting training data with threshold 0.5
+
+slope = coef(glm.fit)[2]/(-coef(glm.fit)[3])
+
+intercept = coef(glm.fit)[1]/(-coef(glm.fit)[3])
+
+plot(train$x1, train$x2, pch = ifelse(train$y >= 0.5,1,8),
+     col = ifelse(train$y >= 0.5, 'blue', 'red'),
+     main = 'Logistic regression', xlb = 'x1', ylab ='x2')
+abline(intercept, 
+       slope, 
+       col="black", 
+       lwd=3)
+legend("topright",
+       legend=c("class1", "class0", "Boundary"),
+       col = c("blue","red","black"),
+       lwd = 4,
+       text.col = "black",
+       horiz = FALSE)	 
+
+#(c)computing confusion matrix for threshold 0.5, 0.3, 0.7
+
+#Predict the probabilities
+prob_pred = predict(classifier, type = 'response', testData[, 1:2])
+
+#predicted values for threshold 0.5
+y_pred = ifelse( prob_pred < 0.5, 0, 1)
+
+#confusion matrix for threshold 0.5
+confusionMatrix_5 = table(y_pred, testData[, 3])
+confusionMatrix_5
+
+performance_5 = mean(y_pred==testData[, 3])
+performance_5
+
+error_5 = mean(y_pred!=testData[, 3])
+error_5
+
+#predicted values for threshold 0.3
+y_pred = ifelse( prob_pred < 0.3, 0, 1)
+
+#confusion matrix for threshold as 0.3
+confusionMatrix_3 = table(y_pred, testData[, 3])
+print("With threshold 0.3")
+
+performance_3 = mean(y_pred==testData[, 3])
+
+error_3 = mean(y_pred!=testData[, 3])
+
+confusionMatrix_3
+error_3
+
+#predicted values for threshold 0.7
+
+y_pred = ifelse( prob_pred < 0.7, 0, 1)
+
+#confusion matrix for threshold as 0.7
+confusionMatrix_7 = table(y_pred, testData[, 3])
+print("With threshold 0.7")
+
+performance_7 = mean(y_pred==testData[, 3])
+
+error_7 = mean(y_pred!=testData[, 3])
+
+confusionMatrix_7
+error_7
+
+
