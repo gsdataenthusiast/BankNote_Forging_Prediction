@@ -1,0 +1,46 @@
+#load the library(MASS)- Modern Applied Statistics with S
+
+library(MASS)
+
+#Import data
+trainData = read.csv('BankTrain.csv')
+trainData = trainData[, c(1,2,5)]
+
+testData = read.csv('BankTest.csv')
+testData = testData[, c(1,2,5)]
+
+#(a)Fit the lda classifier
+ldaClassifier=lda(y~., data=trainData)
+
+#Predicting values of y on test set
+pred_y = predict(ldaClassifier, testData)
+pred_classes = pred_y$class
+
+#Confusion matrix for lda
+confusionMatrix_lda = table(pred_classes, testData[, 3])
+confusionMatrix_lda
+
+lda_performance = mean(pred_classes==testData[, 3])
+lda_performance
+
+lda_error = mean(pred_classes!=testData[, 3])
+lda_error
+
+
+#(b)Fit the qda classifier
+qdaClassifier = qda(y~., data=trainData)
+
+#Predict values on test data for QDA
+pred_y_qda = predict(qdaClassifier, testData)
+pred_y_qda_class = pred_y_qda$class
+
+#Confusion matrix for qda
+confusionMatrix_qda = table(pred_y_qda_class, testData[, 3])
+confusionMatrix_qda
+
+qda_performance = mean(pred_y_qda_class==testData[, 3])
+qda_performance
+
+qda_error = mean(pred_y_qda_class!=testData[, 3])
+qda_error
+
