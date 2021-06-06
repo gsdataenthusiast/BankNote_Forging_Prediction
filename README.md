@@ -23,6 +23,9 @@ On calculating the confusion matrix, accuracy rate and error rate with our model
 
 The above results especially sensitivity projects that this model predicts considerably good.
 
+![image](https://user-images.githubusercontent.com/68840596/120910623-75ffd900-c6d4-11eb-9255-22edc1f0ac37.png)
+
+
 # For threshold 0.3
 Sensitivity = 156/20+156=88.64%(2 dp)
 
